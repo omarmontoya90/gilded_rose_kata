@@ -1,46 +1,34 @@
+def quality_semaller_than_fifty(item)
+  range_quality = (1..49).to_a
+  range_quality.include?(item.quality) && item.quality += 1
+end
+
 def update_quality(items)
+ 
   items.each do |item|
-    if item.name != 'Aged Brie' && item.name != 'Backstage passes to a TAFKAL80ETC concert'
-      if item.quality > 0
-        if item.name != 'Sulfuras, Hand of Ragnaros'
-          item.quality -= 1
-        end
-      end
+    if item.name == 'NORMAL ITEM' || item.name == 'Sulfuras, Hand of Ragnaros'
+      (1..80).to_a.include?(item.quality) && item.name != 'Sulfuras, Hand of Ragnaros' && item.quality -= 1
     else
-      if item.quality < 50
+      if (1..49).to_a.include?(item.quality)
         item.quality += 1
         if item.name == 'Backstage passes to a TAFKAL80ETC concert'
-          if item.sell_in < 11
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
-          if item.sell_in < 6
-            if item.quality < 50
-              item.quality += 1
-            end
-          end
+          (-10..10).to_a.include?(item.sell_in) && quality_semaller_than_fifty(item)
+          (-10..5).to_a.include?(item.sell_in) && quality_semaller_than_fifty(item)
         end
       end
     end
-    if item.name != 'Sulfuras, Hand of Ragnaros'
-      item.sell_in -= 1
-    end
+ 
+    item.name != 'Sulfuras, Hand of Ragnaros' &&  item.sell_in -= 1
+
     if item.sell_in < 0
       if item.name != "Aged Brie"
-        if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-          if item.quality > 0
-            if item.name != 'Sulfuras, Hand of Ragnaros'
-              item.quality -= 1
-            end
-          end
+        if item.name == 'Backstage passes to a TAFKAL80ETC concert'
+          item.quality = 0
         else
-          item.quality = item.quality - item.quality
+          (9..80).to_a.include?(item.quality) && item.name != 'Sulfuras, Hand of Ragnaros' && item.quality -= 1
         end
       else
-        if item.quality < 50
-          item.quality += 1
-        end
+        quality_semaller_than_fifty(item)
       end
     end
   end
